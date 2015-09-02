@@ -1,0 +1,63 @@
+{% extends '_layouts/base.html' %}
+
+{% block headline %}
+<h4> {{ block.super }} </h4>
+<h4> A web application to perform gene function prediction </h4> 
+<!-- <h4> Selective Aggegration of a Predicted List of Inferred Network Genes </h4> -->
+<div class="btn-group">
+	<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"> Sample reports <span class="caret"></span></button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="./media/sapling_sample_attention-deficit-hyperactivity-disorder_17.pdf"><small><small style="color:#bdc3c7">ADHD-Pheno</small></small> Attention deficit hyperactivity disorder &mdash; <i>Portales-Casamar, E., et al. 2013</i></a></li>
+			<li><a href="./media/sapling_sample_iossifov_asd_probands_recurrent_2014_1.pdf"><small><small style="color:#bdc3c7">ASD-recurrent</small></small> Autism spectrum disorder &mdash; <i>Iossifov, I., et al. 2014</i></a></li>
+			<li><a href="./media/sapling_sample_synsysnet_4_22_2013_8.pdf"><small><small style="color:#bdc3c7">SynSysNet</small></small> Synaptic interactions &mdash; <i>von Eichborn, et al. 2012</i></a></li>
+		</ul>
+</div>
+{% endblock headline %}
+
+{% block content %}
+
+<div class="row row-offcanvas row-offcanvas-right">
+	<div class="col-xs-12 col-sm-9">
+	{% if not user.is_authenticated %}
+		<div class="jumbotron">
+			<p>Start with little information  &#8594;  your gene list </p>
+			<p> Use more than a hundred biological networks to characterize the genes </p>
+			<p>First please register in order to use SAPLING</p>
+		<div class="text-left">
+        		<a href="{% url 'signup' %}" class="btn btn-success"><strong>Register</strong></a>
+		</div>
+	</div>
+	{% else %}
+	<div class="jumbotron">
+		<p>Please insert your gene list and create an experiment.</p>
+		<div class="text-left">
+       			<a href="{% url 'gfps:experiments:create' %}" class="btn btn-success"><strong>Create experiment</strong></a>
+		</div>
+	</div>
+	{% endif %}	
+		<div style="background:transparent !important"  class="jumbotron">
+			<h2> Learn and understand how members of your gene list interact with other genes in gene networks </h2>
+			<p> <font size=3> Predict novel candidate genes that are associated to your gene list based upon machine learning algorithms and networks parsed from protein-protein interaction, co-expression from microarray and RNA Seq experiments, and semantic similarity databases. </font></p>
+
+			<p> <font size=3> SAPLING aggregates predictions from user-customizable methods for network analysis in combination with performance assessment and functional characterization.</font></p>
+		</div>
+	</div>
+	{% if user.is_authenticated %}
+	<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+	    	<div class="list-group">
+		        <a href="{% url 'gfps:experiments:create' %}" class="list-group-item"><strong>Create experiment</strong></a>
+	        	<a href="{% url 'gfps:experiments:list' %}" class="list-group-item"><strong>Experiments</strong></a>
+		</div>
+	</div>
+	{% else %}
+	<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+    		<div class="list-group">
+	        	<p align=left><strong>1. Register: create a free account</strong></a>
+	        	<p align=left><strong>2. Create experiment: insert gene list</strong></a>
+	        	<p align=left><strong>3. Configure experiment and method</strong></a>
+	        	<p align=left><strong>4. Receive report by email</strong></a>
+		</div>
+	</div>
+	{% endif %}
+
+{% endblock content %}

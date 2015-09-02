@@ -1,0 +1,13 @@
+{% extends '_layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Register | {{block.super}}{% endblock %}
+
+{% block headline %}
+<h3> {{ block.super }} </h3>
+<h4> Register </h4>
+{% endblock headline %}
+
+{% block content %}
+{% crispy form %}
+{% endblock content %}

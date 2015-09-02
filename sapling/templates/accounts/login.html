@@ -1,0 +1,16 @@
+{% extends '_layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} Login | {{block.super}}{% endblock %}
+
+{% block headline %}
+<h3> {{ block.super }} </h3>
+<h4> Login </h4>
+{% endblock headline %}
+
+{% block content %}
+{% crispy form %}
+
+<p>Forgot your password? <a href='/resetpassword/'> Please reset it! </a></p>
+{% endblock content %}

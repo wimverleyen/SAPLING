@@ -1,0 +1,13 @@
+
+<link rel="stylesheet" type="text/css" href="/www/sapling/static/css/style.css" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="./static/css/style.css" />
+
+<a class="navbar-brand" href="/"><img src="{{ STATIC_URL}}images/saplingoriglogo.png" height="30px"></a>
+<a class="navbar-brand" href="/"><img src="{% static 'images/sapling.jpg' %}" width="30"></a>
+
+
+<a class="navbar-brand" href="{% url 'home' %}">SAPLING</a>
+
+
+<div class="col-md-8" align="center"> SAPLING is released under <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GNU General Public License</a>

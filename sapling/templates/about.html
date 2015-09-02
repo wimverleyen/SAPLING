@@ -1,0 +1,14 @@
+{% extends '_layouts/base.html' %}
+
+{% block title %} About | {{block.super}}{% endblock %}
+
+{% block headline %} 
+<h3> {{ block.super }} </h3>
+<h4> About </h4>
+{% endblock headline %}
+
+{% block content %}
+<p> SAPLING (Selective Aggregation of a Predicted List of Inferred Network Genes) predicts novel candidate genes accociated to the gene list. These predictions are based upon the customizable aggregation of different data resources and algorithms.</p>
+
+<p> SAPLING is actively developed at the <a href="http://gillislab.labsites.cshl.edu/"> Gillis Lab </a> at Cold Spring Harbor Laboratory. </p>
+{% endblock content %}
