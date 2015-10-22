@@ -1,0 +1,11 @@
+<!-- <div class="panel panel-primary"> -->
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<a class="close" aria-hidden="true" class="pull-right" href="{% url 'gfps:experiments:remove_gfp' gfp.experiment_id gfp.id %}">&times;</a>
+		<!-- <h1 class="panel-title"><a href="{{ gfp.get_absolute_url }}">{{ gfp.Name }}</a></h1> -->
+		<h1 class="panel-title"><span class="glyphicon glyphicon-info-sign"></span> {{ gfp.Name }}</h1>
+	</div>
+	<div class="panel-body">
+		<p class="bg-primary" style="padding: 15px"><strong>{{ gfp.Algorithm }}</strong> algorithm with <strong>{{ gfp.Network }} {{ gfp.Type }} data.</strong></p>
+	</div>
+</div>

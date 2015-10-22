@@ -1,0 +1,14 @@
+{% extends '_layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{ headline }} | {{ block.super }} {% endblock title %}
+
+{% block headline %} 
+<h3> {{ headline }} </h3>
+<h4> New experiment </h4>
+<h5> Please insert a new gene list and a name for your experiment </h5>
+{% endblock headline %}
+
+{% block content %}
+{% crispy form %}
+{% endblock content %}

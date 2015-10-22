@@ -1,0 +1,32 @@
+{% extends '_layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{ object.name }} | Experiments Details | {{ block.super }} {% endblock title %}
+
+{% block headline %} 
+<h3> {{ object.Name }} </h3> 
+<h4> Detailed overview </h4> 
+{% endblock headline %}
+
+{% block content %}
+<div class="row">
+
+	<div class="col-sm-6">
+		{% for gfp in object.gfps.all %}
+			{% include 'GFPdevs/_GFP.html' %}
+		{% endfor %}
+	</div>
+	<div class="col-sm-6">
+		<div class="panel panel-default">
+		<div class="panel-heading">
+			<h1 class="panel-title">Compose GFP method</h1>
+		</div>
+		<div class="panel-body">
+			{% crispy form %}
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<p><a href="{% url 'gfps:experiments:list' %}" class="btn"> Your experiements </a></p>
+	</div>
+</div>
+{% endblock content %}

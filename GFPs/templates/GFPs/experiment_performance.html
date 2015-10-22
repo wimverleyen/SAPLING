@@ -1,0 +1,34 @@
+{% extends '_layouts/base.html' %}
+
+{% block title %} Performance | {{ block.super }} {% endblock title %}
+
+{% block headline %} 
+<h1> {{ block.super }} </h1>
+<h2> Performance </h2>
+{% endblock headline %}
+
+{% block content %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h1 class="panel-title">Gene function prediction</h1>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Prediction (Top 50)</th>
+				<th>Performance (AUROC: 3-fold CV)</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for object in object_list %}
+			<tr>
+				<td> <a href="{{ object.gfp.get_absolute_url_prediction }}">{{object.gfp}} </td>
+				<td>{{ object.AUROC }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock content %}

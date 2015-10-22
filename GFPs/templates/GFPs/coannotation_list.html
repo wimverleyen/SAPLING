@@ -1,0 +1,40 @@
+{% extends '_layouts/base.html' %}
+
+{% block title %} Experiments | {{ block.super }} {% endblock title %}
+{% block headline %}
+<h3> {{ block.super }} </h3>
+<h4> Microarray experiments for co-expression network construction </h4>
+{% endblock headline %}
+
+{% block content %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h1 class="panel-title">Annotation co-expression networks</h1>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Description</th>
+				<th>Network ID</th>
+				<th>N samples</th>
+				<th>Category</th>
+				<th>Technology</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for object in object_list %}
+			<tr>
+				<td>{{ object.Description }}</td>
+				<td>{{ object.Geoid }}</td>
+				<td>{{ object.Samples }}</td>
+				<td>{{ object.Category }}</td>
+				<td>{{ object.Type }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+
+{% endblock content %}

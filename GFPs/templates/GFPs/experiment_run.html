@@ -1,0 +1,36 @@
+{% extends '_layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Run | {{ block.super }}{% endblock title %}
+
+{% block headline %}
+<h3>{{ object.Name }}</h3>
+<h4>Execute experiment</h4>
+{% endblock headline %}
+
+{% block content %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h1 class="panel-title">Gene function prediction</h1>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Algorithm</th>
+				<th>Network</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for gfps in object.gfps.all %}
+			<tr>
+				<td>{{ gfps.Algorithm }}</td>
+				<td>{{ gfps.Network }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% crispy form %}
+
+{% endblock content %}

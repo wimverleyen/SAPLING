@@ -1,0 +1,36 @@
+{% extends '_layouts/base.html' %}
+
+{% block title %} Experiments | {{ block.super }} {% endblock title %}
+{% block headline %}
+<h3> {{ block.super }} </h3>
+<h4> Central navigation panel for experiments </h4>
+{% endblock headline %}
+
+{% block content %}
+<div class="row">
+	<div class="col-sm-8">
+		<ul class="list-group row">
+			{% for object in object_list %}
+			<li class="list-group-item col-xs-8">
+				<a href="{{ object.get_absolute_url }}">{{ object.Name }}</a>
+				<span class="badge"> {{ object.gfp_count }} </span>
+				{% if not object.running_gfp %}
+					<span class="badge badge-success"> {{ object.running_gfp }} </span>
+				{% else %}
+					<span class="badge badge-info"> {{ object.running_gfp }} </span>
+				{% endif %}
+			</li>
+			<li class="list-group-item col-xs-2">
+				<a href="{{ object.get_absolute_url_run }}"> Run </a>
+			</li>
+			{% empty %}
+			<li class="list-group-item col-xs-6">You have no experiments</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col-sm-6">
+		<a href="{% url 'gfps:experiments:create' %}" class="btn btn-success">Create a new experiment</a>
+	</div>
+</div>
+
+{% endblock content %}

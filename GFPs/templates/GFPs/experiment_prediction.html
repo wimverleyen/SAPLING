@@ -1,0 +1,36 @@
+{% extends '_layouts/base.html' %}
+
+{% block title %} Prediction | {{ block.super }} {% endblock title %}
+
+{% block headline %} 
+<h1> {{ block.super }} </h1>
+<h2> Prediction </h2>
+{% endblock headline %}
+
+{% block content %}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h1 class="panel-title">Gene function prediction</h1>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Protein ID</th>
+				<th>Score</th>
+				<th>Annotation</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for object in object_list %}
+			<tr>
+				<td>{{ object.ProteinID }}</td>
+				<td>{{ object.Score }}</td>
+				<td>{{ object.Annotation }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock content %}
