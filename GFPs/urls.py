@@ -24,16 +24,11 @@ experiment_patterns = patterns(
 		regex=r'^d/(?P<slug>[-\w]+)/$', 
 		view = ExperimentDetailView.as_view(), 
 		name='detail'),
-	#url(
-	#	regex=r'^n/(?P<slug>[-\w]+)/$', 
-	#	view = NetworkDetailView.as_view(), 
-	#	name='net'),
 	url(
 		regex=r'^r/(?P<slug>[-\w]+)/$', 
 		view = ExperimentRunDetailView.as_view(), 
 		name='run'),
 	url(
-		#regex=r'^pe/(?P<experiment_pk>[-\w]+)/$', 
 		regex=r'^pe/(?P<slug>[-\w]+)/$', 
 		view = PerformanceListView.as_view(), 
 		name='performance'),
