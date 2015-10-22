@@ -12,7 +12,7 @@ from numpy.linalg import inv
 from scipy import interp
 from scipy.io import loadmat, savemat
 from scipy.sparse import issparse, lil_matrix
-from scipy.stats import rankdata
+from scipy.stats import rankdata, spearmanr
 from scipy.stats.kde import gaussian_kde
 from sklearn.metrics import roc_curve, auc
 from matplotlib.pyplot import figure, plot, axis
@@ -23,11 +23,11 @@ rc('font',**{'family':'LinLibertine'})
 from collections import Counter
 
 from django.db import transaction
-from saplingdev.settings import BASE_DIR
+from sapling.settings import BASE_DIR
 
 from enrich.enrichment import EnrichmentAnalysis
 
-from GFPdevs.models import Performance, Prediction, AggregatePerformance, AggregatePrediction, GeneSymbol, NovelCandidates, GFP, Experiment, Enrichment, EnrichmentGFP, CoAnnotation
+from GFPs.models import Performance, Prediction, AggregatePerformance, AggregatePrediction, GeneSymbol, NovelCandidates, GFP, Experiment, Enrichment, EnrichmentGFP, CoAnnotation
 
 from bulk_update.helper import bulk_update
 
@@ -237,10 +237,12 @@ class Algorithm:
     proteinid = loadmat(path, squeeze_me=False, mat_dtype=True)
     self._proteinid = proteinid['proteinid']
 
-  def plotROCCurve(self, ID, aggregate=False):
+  def plotROCCurve(self, ID, aggregate=False, rep=[]):
     fig = figure()
     if aggregate:
-      add_plot = fig.add_subplot(1, 1, 1)
+
+      fig.subplots_adjust(left=0.125, right=0.9, bottom=0.1, top=0.9, hspace=0.6, wspace=0.4)
+      add_plot = fig.add_subplot(1, 2, 1)
 
       identity = arange(0, 1.1, 0.1)
 
@@ -256,9 +258,33 @@ class Algorithm:
       add_plot.set_aspect(1./add_plot.get_data_ratio())
       add_plot.grid(True)
 
+      add_plot = fig.add_subplot(1, 2, 2)
+      add_plot.set_ylim([-1.0, 1.4])
+      width = 0.2
+      #N = 5
+      #ind = arange(N)
+      #ind = [0]
+
+      add_plot.bar(0.0, rep[0], width, color='forestgreen', label='PPI')
+      add_plot.bar(0.2, rep[1], width, color='dodgerblue', label='SM')
+      add_plot.bar(0.4, rep[2], width, color='gold', label='sc RNA Seq')
+      add_plot.bar(0.6, rep[3], width, color='olive', label='RNA Seq')
+      add_plot.bar(0.8, rep[4], width, color='indianred', label='Microarray')
+
+      label = "Data resource"
+      add_plot.set_xlabel(label, fontsize=12)
+      add_plot.set_xticks([])
+      label = "Total node degree\nrepresentation bias (r)"
+      add_plot.set_ylabel(label, fontsize=12, multialignment='center')
+      add_plot.set_aspect(1./add_plot.get_data_ratio())
+      add_plot.legend(ncol=2, fontsize=6, loc="upper right")
+      add_plot.grid(True)
+
       filename = BASE_DIR + "/figures/ROC_Curve_Aggregate_" + str(ID) + ".png"
       fig.savefig(filename, format="png", dpi=300)
+
     else:
+
       fig.subplots_adjust(left=0.125, right=0.9, bottom=0.1, top=0.9, hspace=0.6, wspace=0.4)
 	
       add_plot = fig.add_subplot(1, 2, 1)
@@ -755,56 +781,19 @@ class Algorithm:
       Type = gfp.Type
       print "Type: ", Type 
 
-    #network = CoAnnotation.objects.filter(Geoid=gfp.Network)
-    #network = network[0]
-    #print network.Type
-
     # GO enrichment
     enrich = EnrichmentAnalysis(experimentID, gfpID)
     enrich.loadProfile("GOID_Human_1_24_2015.mat", \
                        "Gene2GO_Human_1_24_2015.mat")
 
-    #else:
     if not Enrichment.objects.filter(experiment_id=experimentID, Profile="GO").exists():
       enrich.run(profile="GO")
-    #if network.Type == 'sc RNA Seq':
     if Type == 'sc RNA Seq':
       enrich.runGFPscRNASeq(profile="GO")
     else:
       enrich.runGFP(profile="GO")
     del enrich
-
-
-    """
-    # KEGG enrichment
-    enrich = EnrichmentAnalysis(experimentID, gfpID)
-    enrich.loadProfile("KEGGID_Human_1_24_2015.mat", \
-                       "KEGG_Human_1_24_2015.mat")
-
-    #else:
-    if not Enrichment.objects.filter(experiment_id=experimentID, Profile="KEGG").exists():
-      enrich.run(profile="KEGG")
-    if network.Type == 'sc RNA Seq':
-      enrich.runGFPscRNASeq(profile="KEGG")
-    else:
-      enrich.runGFP(profile="KEGG")
-    del enrich
-
-    # Phenocarta enrichment
-    enrich = EnrichmentAnalysis(experimentID, gfpID)
-    enrich.loadProfile("PhenocartaID_Human_1_24_2015.mat", \
-                       "Phenocarta_Human_1_24_2015.mat")
-
-    #else:
-    if not Enrichment.objects.filter(experiment_id=experimentID, Profile="Phenocarta").exists():
-      enrich.run(profile="Phenocarta")
-    if network.Type == 'sc RNA Seq':
-      enrich.runGFPscRNASeq(profile="Phenocarta")
-    else:
-      enrich.runGFP(profile="Phenocarta")
-    del enrich
-    """
-
+    
   def aggregate(self, gfpIDs, experimentID):
     proteinid = Prediction.objects.filter(gfp=gfpIDs[0], CV=-1).order_by("ProteinID").values_list('ProteinID', flat=True)
 
@@ -819,7 +808,6 @@ class Algorithm:
     labelcv = Prediction.objects.filter(gfp=gfpIDs[0], CV=3).order_by("ProteinID").values_list('Annotation', flat=True)
     labelcv = asarray(labelcv)
 
-    #y = len(Prediction.objects.filter(gfp=gfpIDs[0], CV=3).order_by("ProteinID").values_list('Score', flat=True))
     y = Prediction.objects.filter(gfp=gfpIDs[0], CV=3).order_by("ProteinID").count()
     performance = zeros((len(gfpIDs), y))
 
@@ -910,17 +898,82 @@ class Algorithm:
       per.save(experimentID, self._auroc)
       del per
 
-    self._TPR_FPR(labelcv, aggperf)
-    self.plotROCCurve(experimentID, aggregate=True)
-
     # representation bias
+    nodedegree = zeros(self._proteinid.shape)
+    nodedegree = nodedegree.ravel()
+    print "ND: ", nodedegree.shape
+    
+    for gfp in gfpIDs:
+      path = ""
+      if gfp.Type == 'PPI':
+        path = BASE_DIR + "/data/"+ gfp.Type + "/" + gfp.Network + "/ppiNetwork_Human_1_24_2015.mat"
+      elif gfp.Type == 'Co':
+        path = BASE_DIR + "/data/"+ gfp.Type + "/" + gfp.Network + "/coNetwork_Human_1_24_2015.mat" 
+      elif gfp.Type == 'SM':
+        path = BASE_DIR + "/data/"+ gfp.Type + "/" + gfp.Network + "/smNetwork_Human_1_24_2015.mat"
+      else:
+        log.debug("Invalid network - type")
+
+      network = loadmat(path, squeeze_me=False, mat_dtype=True)
+      network = network['network']
+      if issparse(network):
+        network = network.todense()
+
+      nodedegreenet = network.sum(axis=1)
+      nodedegreenet = asarray(nodedegreenet).ravel()
+
+      nodedegree += nodedegreenet
+
+    nodedegree = rankdata(nodedegree)
+    (x, y) = self._proteinid.shape
+    nodedegree /= float(x)
+
+    print "ND: ", nodedegree.shape
+
+    rrep = []
+
+    path = BASE_DIR + "/data/representation_PPI.mat"
+    predictor = loadmat(path, squeeze_me=False, mat_dtype=True)
+    representation_PPI = predictor['predictor']
+    representation_PPI = asarray(representation_PPI).ravel()
+    print spearmanr(representation_PPI, nodedegree)
+    (ppir, ppip) = spearmanr(representation_PPI, nodedegree)
+    rrep.append(ppir)
+
+    path = BASE_DIR + "/data/representation_SM.mat"
+    predictor = loadmat(path, squeeze_me=False, mat_dtype=True)
+    representation_SM = predictor['predictor']
+    representation_SM = asarray(representation_SM).ravel()
+    print spearmanr(representation_SM, nodedegree)
+    (smr, smp) = spearmanr(representation_SM, nodedegree)
+    rrep.append(smr)
+
     path = BASE_DIR + "/data/representation_scRNASeq.mat"
     predictor = loadmat(path, squeeze_me=False, mat_dtype=True)
-    predictor = predictor['predictor']
+    representation_scRNASeq = predictor['predictor']
+    representation_scRNASeq = asarray(representation_scRNASeq).ravel()
+    print spearmanr(representation_scRNASeq, nodedegree)
+    (scRNASeqr, scRNASeqp) = spearmanr(representation_scRNASeq, nodedegree)
+    rrep.append(scRNASeqr)
 
-    print predictor.shape
+    path = BASE_DIR + "/data/representation_RNASeq.mat"
+    predictor = loadmat(path, squeeze_me=False, mat_dtype=True)
+    representation_RNASeq = predictor['predictor']
+    representation_RNASeq = asarray(representation_RNASeq).ravel()
+    print spearmanr(representation_RNASeq, nodedegree)
+    (RNASeqr, RNASeqp) = spearmanr(representation_RNASeq, nodedegree)
+    rrep.append(RNASeqr)
 
-    
+    path = BASE_DIR + "/data/representation_Micro1.mat"
+    predictor = loadmat(path, squeeze_me=False, mat_dtype=True)
+    representation_micro = predictor['predictor']
+    representation_micro = asarray(representation_micro).ravel()
+    print spearmanr(representation_micro, nodedegree)
+    (micror, microp) = spearmanr(representation_micro, nodedegree)
+    rrep.append(micror)
+
+    self._TPR_FPR(labelcv, aggperf)
+    self.plotROCCurve(experimentID, aggregate=True, rep=rrep)
 
   # Factory method
   @staticmethod
