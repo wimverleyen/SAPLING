@@ -85,11 +85,11 @@ This is the main directory for SAPLING. Typically, settings, templates, forms, U
 
 ### GFPs/
 
-The directory of the gene function prediction (GFP) application collects all the code for the models, views, forms, URLs, etc. Also, the tasks for computing a GFP and aggregation are situated in this directory. These tasks bind to a celery defined name and will be scheduled after they are called.
+The directory of the gene function prediction (GFP) application collects all the code for the models, views, forms, URLs, etc. Also, the tasks for computing a GFP and aggregation are situated in this directory. These tasks bind to a celery defined name and will be scheduled accordingly.
 
 ### algorithms/
 
-
+A factory design pattern is used to implement the machine learning algorithms. Furthermore, loading the appropriate data for the network analysis, communication with the underlying MySQL database, the performance evaluation, the execution of the aggregation of different types of network analysis, etc. are implemented in this directory.
 
 ### enrich/
 
