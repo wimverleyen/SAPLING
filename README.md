@@ -1,4 +1,4 @@
-#SAPLING: [https://sapling.cshl.edu](https://sapling.cshl.edu) 
+#SAPLING: [sapling.cshl.edu](https://sapling.cshl.edu) 
 
 ![alt text][logo]
 [logo]: https://github.com/wimverleyen/SAPLING/blob/master/logo/saplingoriglogo.png "SAPLING"
