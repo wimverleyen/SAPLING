@@ -78,6 +78,8 @@ zope.interface (4.0.5)
 
 ## Description of directory structure
 
+This is the main directory for SAPLING. Typically, settings, templates, forms, URLs, etc. related to the Django are programmed.
+
 ### sapling/
 
 ### GFPs/
