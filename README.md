@@ -1,5 +1,6 @@
 #SAPLING 
 
+![alt text][logo]
 [logo]: https://github.com/wimverleyen/SAPLING/blob/master/logo/saplingoriglogo.png "SAPLING"
 
 Web application to perform gene network analysis
