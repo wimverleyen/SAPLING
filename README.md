@@ -3,7 +3,7 @@
 ![alt text][logo]
 [logo]: https://github.com/wimverleyen/SAPLING/blob/master/logo/saplingoriglogo.png "SAPLING"
 
-Web application to perform gene network analysis
+Web application to perform gene network analysis: [link for SAPLING](https://sapling.cshl.edu)
 
 ## Installation Python modules
 
@@ -93,7 +93,9 @@ A factory design pattern is used to implement the machine learning algorithms. F
 
 ### enrich/
 
+The implementation of the enrichment analysis can be found in this directory. The enrichment analysis is not configured as a separate application in the Django framework.
+
 ### report/
 
-
+The Python module reportlab is used to generate a portable document format (pdf) of all the network analyses performed by SAPLING.
 
