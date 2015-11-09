@@ -1,8 +1,10 @@
-#SAPLING
+#SAPLING [logo]: https://github.com/wimverleyen/SAPLING/blob/master/logo/saplingoriglogo.png
+"SAPLING"
 
+https://github.com/wimverleyen
 Web application to perform gene network analysis
 
-1. Installation Python modules
+## Installation Python modules
 
 --amqp (1.4.6)
 --anyjson (0.3.3)
@@ -73,9 +75,8 @@ Web application to perform gene network analysis
 --zope.interface (4.0.5)
 
 
-2. Description of directory structure
+## Description of directory structure
 
-a. sapling/
 
 
 
