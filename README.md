@@ -1,7 +1,7 @@
-#SAPLING [logo]: https://github.com/wimverleyen/SAPLING/blob/master/logo/saplingoriglogo.png
-"SAPLING"
+#SAPLING 
 
-https://github.com/wimverleyen
+[logo]: https://github.com/wimverleyen/SAPLING/blob/master/logo/saplingoriglogo.png "SAPLING"
+
 Web application to perform gene network analysis
 
 ## Installation Python modules
