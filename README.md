@@ -1,9 +1,9 @@
-#SAPLING 
+#SAPLING: [https://sapling.cshl.edu](https://sapling.cshl.edu) 
 
 ![alt text][logo]
 [logo]: https://github.com/wimverleyen/SAPLING/blob/master/logo/saplingoriglogo.png "SAPLING"
 
-Web application to perform gene network analysis: [link for SAPLING](https://sapling.cshl.edu)
+Web application to perform gene network analysis: [link to SAPLING](https://sapling.cshl.edu)
 
 ## Installation Python modules
 
