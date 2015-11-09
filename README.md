@@ -85,7 +85,11 @@ This is the main directory for SAPLING. Typically, settings, templates, forms, U
 
 ### GFPs/
 
+The directory of the gene function prediction (GFP) application collects all the code for the models, views, forms, URLs, etc. Also, the tasks for computing a GFP and aggregation are situated in this directory. These tasks bind to a celery defined name and will be scheduled after they are called.
+
 ### algorithms/
+
+
 
 ### enrich/
 
